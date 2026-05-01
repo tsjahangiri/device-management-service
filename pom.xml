@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.device.management</groupId>
+    <artifactId>device-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>device-service</name>
+
+    <properties>
+        <java.version>21</java.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <testcontainers.version>2.0.3</testcontainers.version>
+        <springdoc.version>2.8.6</springdoc.version>
+        <jib.version>3.4.3</jib.version>
+        <unleash.version>3.3.0</unleash.version>
+    </properties>
+
+    <!-- SCM block is REQUIRED by the plugin -->
+    <scm>
+        <connection>scm:git:https://github.com/tsjahangiri/device-management-service.git</connection>
+        <developerConnection>scm:git:https://github.com/tsjahangiri/device-management-service.git</developerConnection>
+        <url>https://github.com/tsjahangiri/device-management-service</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/tsjahangiri/device-management-service</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages (Snapshots)</name>
+            <url>https://maven.pkg.github.com/tsjahangiri/device-management-service</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <!-- ── Web ──────────────────────────────────────────────────────────────── -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- ── Data ─────────────────────────────────────────────────────────────── -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ── Mapping ──────────────────────────────────────────────────────────── -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <!-- ── Documentation ────────────────────────────────────────────────────── -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- ── Testing ──────────────────────────────────────────────────────────── -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.20.6</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>1.20.6</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- ── Compiler ─────────────────────────────────────────────────────── -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <!-- version inherited from spring-boot-starter-parent BOM -->
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <!-- ── Spring Boot Maven Plugin ─────────────────────────────────────── -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <profiles>
+                        <profile>dev</profile>
+                    </profiles>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- ── Jib OCI Image Builder ────────────────────────────────────────── -->
+            <!--
+                Direct translation of the Gradle jib { … } block.
+
+                Useful commands:
+                  mvn jib:dockerBuild          → push to local Docker daemon
+                  mvn jib:build                → push directly to a remote registry
+                  mvn jib:buildTar             → produce a .tar for later docker load
+
+                The multi-arch platform block (amd64 + arm64) requires jib:build
+                (local daemon does not support multi-platform images).
+            -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib.version}</version>
+                <configuration>
+                    <from>
+                        <image>gcr.io/distroless/java21-debian12</image>
+                        <platforms>
+                            <platform>
+                                <os>linux</os>
+                                <architecture>amd64</architecture>
+                            </platform>
+                            <platform>
+                                <os>linux</os>
+                                <architecture>arm64</architecture>
+                            </platform>
+                        </platforms>
+                    </from>
+                    <to>
+                        <image>device-service</image>
+                        <tags>
+                            <tag>latest</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                        <jvmFlags>
+                            <jvmFlag>-XX:+UseContainerSupport</jvmFlag>
+                            <jvmFlag>-XX:MaxRAMPercentage=75.0</jvmFlag>
+                        </jvmFlags>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                        <environment>
+                            <SPRING_PROFILES_ACTIVE>dev</SPRING_PROFILES_ACTIVE>
+                        </environment>
+                    </container>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.github.mavenplugins</groupId>
+                <artifactId>unleash-maven-plugin</artifactId>
+                <version>${unleash.version}</version>
+
+                <dependencies>
+                    <!--
+                        JGit provider = unleash uses its OWN Git library,
+                        no system Git installation required.
+                        Must match the same version as the plugin itself.
+                    -->
+                    <dependency>
+                        <groupId>io.github.mavenplugins</groupId>
+                        <artifactId>unleash-scm-provider-git</artifactId>
+                        <version>${unleash.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <!--
+                        Tag format: device-service-0.0.1
+                        @{project.artifactId} = "device-service"
+                        @{project.version}    = "0.0.1" (SNAPSHOT stripped automatically)
+                    -->
+                    <tagNamePattern>@{project.artifactId}-@{project.version}</tagNamePattern>
+
+                    <!--
+                        'auto' means: patch increment
+                        0.0.1 → releases as 0.0.1 → next dev = 0.0.2-SNAPSHOT
+                        Change to 'minor' for: 0.0.1 → 0.1.0-SNAPSHOT
+                    -->
+                    <developmentVersion>auto</developmentVersion>
+
+                    <!--
+                        All Git commits made by unleash will be prefixed with this.
+                        You'll see these in your GitHub commit history.
+                    -->
+                    <scmMessagePrefix>[unleash-release]</scmMessagePrefix>
+
+                    <!--
+                        IMPORTANT for your project:
+                        Your tests use Testcontainers (PostgreSQL).
+                        These require Docker to be running during the release build.
+                        If your CI doesn't have Docker, skip tests during release:
+                    -->
+                    <!-- <skipTests>true</skipTests> -->
+
+                    <!--
+                        Allow release even if there are SNAPSHOT dependencies.
+                        Set to false (default) for strict production releases.
+                        Set to true only during initial setup/testing.
+                    -->
+                    <allowLocalReleaseArtifacts>false</allowLocalReleaseArtifacts>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
