@@ -10,7 +10,7 @@
 
     <groupId>com.device.management</groupId>
     <artifactId>device-service</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
     <name>device-service</name>
 
@@ -28,7 +28,7 @@
         <connection>scm:git:https://github.com/tsjahangiri/device-management-service.git</connection>
         <developerConnection>scm:git:https://github.com/tsjahangiri/device-management-service.git</developerConnection>
         <url>https://github.com/tsjahangiri/device-management-service</url>
-        <tag>HEAD</tag>
+        <tag>device-service-0.0.4</tag>
     </scm>
 
     <distributionManagement>
