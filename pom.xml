@@ -10,7 +10,7 @@
 
     <groupId>com.device.management</groupId>
     <artifactId>device-service</artifactId>
-    <version>auto</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>device-service</name>
 
